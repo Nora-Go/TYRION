@@ -1,0 +1,53 @@
+target: CaFFe.GenericDataModule.GenericDataModule
+params:
+  n_workers : 8
+  persistent_workers : True
+  custom_collate:
+    target: CaFFe.custom_collate.custom_collate
+
+  train_config:
+    target: CaFFe.dataset_hook.RandomPatchDataset
+    params:
+      patch_size : 256
+      context_factor : 2
+      context_without_resize : True
+      prob_mix_up: 0.3
+      prob_rezoom: 0.5
+      parent_dir : "/scratch/dataCaFFeBig/data_raw/"
+      split : "train"
+      nr_of_samples_per_epoch : 40000
+      augmentation :
+        target: CaFFe.augmentations.OcrodegAug.OcrodegAug
+        params:
+          p_brightness: 0.2
+          p_gamma: 0.2
+          p_poisson_speckel: 0.2
+
+      double_augmentation :
+        target: CaFFe.augmentations.FlipAugments.FlipAugments
+        params:
+          p_flip_v : 0.5
+          p_rotate : 0.5
+          p_flip_h : 0.5
+
+  validation_config:
+    target: CaFFe.dataset_hook.PatchDataSet
+    params:
+      patch_size: 256
+      context_factor: 2
+      context_without_resize: True
+      parent_dir: "/scratch/dataCaFFeBig/data_raw/"
+      split: "val"
+
+      double_augmentation:
+        target: CaFFe.augmentations.FlipAugments.FlipAugments
+      augmentation:
+        target: CaFFe.augmentations.OcrodegAug.OcrodegAug
+
+  test_config:
+    target: CaFFe.dataset_hook.BasicDataset
+    params:
+      dir_img_target: "/scratch/dataCaFFeValidation/target_images"
+      dir_img_context: "/scratch/dataCaFFeValidation/context_images"
+      dir_mask_target: "/scratch/dataCaFFeValidation/target_masks"
+      dir_mask_context: "/scratch/dataCaFFeValidation/context_masks"

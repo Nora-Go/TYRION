@@ -1,0 +1,9 @@
+
+/CaFFe/augmentations/__pycache__
+*.pyc
+*.png
+/.idea
+swin_tiny_patch4_window7_224.pth
+*.0
+swin_base_patch4_window12_384_22k.pth
+*.pth

@@ -1,0 +1,31 @@
+target: CaFFe.GenericDataModule_Unlabeled.GenericDataModule_Unlabeled
+params:
+  n_workers : 8
+  persistent_workers : True
+  custom_collate:
+    target: torch.utils.data._utils.collate.default_collate
+
+  train_config:
+    target: CaFFe.dataset_unlabeled.Random_Dataset_OptSimMIM
+    params:
+      patch_size: 512
+      parent_dir: "/scratch/data_unlabeled/unlabeled_data_raw_train/"
+      parent_dir_optical: "/scratch/data_optical/data_optical/"
+      nr_of_samples_per_epoch: 76496     # 9562 images (average image size: 2052490) * 8 (average number of 512^2 patches per image)
+      min_scale: 0.7
+
+  validation_config:
+    target: CaFFe.dataset_unlabeled.Unlabeled_PatchDataSet_OptSimMIM
+    params:
+      patch_size: 512
+      context_factor: 2
+      parent_dir: "/scratch/data_unlabeled/unlabeled_data_raw_val/"
+      parent_dir_optical: "/scratch/data_optical/data_optical/"
+
+  test_config:
+    target: CaFFe.dataset_unlabeled.Unlabeled_PatchDataSet_OptSimMIM
+    params:
+      patch_size: 512
+      context_factor: 2
+      parent_dir: "/scratch/data_unlabeled/unlabeled_data_raw_val/"
+      parent_dir_optical: "/scratch/data_optical/data_optical/"

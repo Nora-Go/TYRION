@@ -1,0 +1,30 @@
+target: model.pretraining.OptSimMIM.SimMIM
+# ckpt:
+params:
+  config:
+    target: model.modules.Tyrion.Tyrion
+    params:
+      img_size: 512
+      patch_size : 4
+      in_chans : 3
+      embed_dim : 96
+      depths : [2, 2, 6, 2]
+      depths_decoder : [2, 2, 4, 2]
+      num_heads : [3, 6, 12, 24]
+      window_size : 16
+      mlp_ratio : 4.
+      increased_window_factor : 1
+      qkv_bias : True
+      drop_rate : 0.0
+      attn_drop_rate : 0.0
+      drop_path_rate : 0.0
+      patch_norm : True
+      final_upsample : "expand_first"
+      checkpoint_transformer : "swinv2_tiny_patch4_window16_256.pth"
+      checkpoint_context : "swinv2_tiny_patch4_window16_256.pth"
+
+  num_classes: 4
+  mask_ratio: 0.3
+  lr: 0.001 #0.06
+  weight_decay: 1e-4
+  momentum: 0.9

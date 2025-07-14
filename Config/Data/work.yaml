@@ -1,0 +1,62 @@
+target: CaFFe.GenericDataModule.GenericDataModule
+params:
+  n_workers : 0
+  persistent_workers : False
+  custom_collate:
+    target: CaFFe.custom_collate.custom_collate
+
+  train_config:
+    target: CaFFe.dataset_hook.RandomPatchDataset
+    params:
+      patch_size: 256
+      context_factor: 2
+      context_without_resize: True
+      prob_mix_up : 1.0
+      prob_rezoom : 1.0
+      nr_of_samples_per_epoch : 200
+      parent_dir:
+      split: "test"
+
+      augmentation:
+        target: CaFFe.augmentations.OcrodegAug.OcrodegAug
+
+      double_augmentation :
+        target: CaFFe.augmentations.FlipAugments.FlipAugments
+        params:
+          p_flip_v : 0.5
+          p_rotate : 0.5
+          p_flip_h : 0.5
+
+  validation_config:
+    target: CaFFe.dataset_hook.PatchDataSet
+    context_without_resize: True
+
+    params:
+      patch_size: 256
+      context_factor: 2
+      context_without_resize: True
+      parent_dir:
+      split: "val"
+
+      augmentation:
+        target: CaFFe.augmentations.OcrodegAug.OcrodegAug
+
+      double_augmentation:
+        target: CaFFe.augmentations.FlipAugments.FlipAugments
+
+  test_config:
+    target: CaFFe.dataset_hook.PatchDataSet
+    context_without_resize: True
+
+    params:
+      patch_size: 256
+      context_factor: 2
+      parent_dir:
+      split: "test"
+      context_without_resize: True
+
+
+      double_augmentation:
+        target: CaFFe.augmentations.FlipAugments.FlipAugments
+      augmentation:
+        target: CaFFe.augmentations.OcrodegAug.OcrodegAug
